@@ -5,6 +5,7 @@ import { useEffect } from "react";
 function App() {
   const categories = ["natura", "città", "montagna", "urban", "eustorgio"];
   const [addPost, setAddPost] = useState({
+    id: "",
     title: "",
     img: "",
     category: "",
@@ -14,11 +15,17 @@ function App() {
   });
   const [posts, setPosts] = useState([]);
 
-  // Ciao Daniela! L'errore Uncaught TypeError: addPost.category.map is not a function è dovuto al fatto che stai aggiornando l'intero oggetto addPost
-  //  in modo errato nella funzione handlePostChange. Quando selezioni una categoria, la chiave category viene sovrascritta da una stringa (il valore
-  //   dell'opzione selezionata), ma in origine era un array. Di conseguenza, quando tenti di usare map su una stringa, ottieni quell'errore.
-  //   Per risolvere il problema, puoi aggiornare la funzione handlePostChange in modo che gestisca correttamente i diversi tipi di input, verificando
-  //    se stai modificando un array o una singola proprietà. In alternativa, puoi evitare di sovrascrivere addPost.category se non necessario.
+  const fetchPosts = () => {
+    fetch("http://localhost:3000/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  });
 
   const handlePostChange = (e) => {
     const newValue =
@@ -149,7 +156,7 @@ function App() {
           <section className="post-list">
             <div className="container">
               <h2 className="post-list-title"> Post List</h2>
-              <div className="row row-cols-3 ">
+              <div className="row row-cols-3 g-4">
                 {posts.map((post) => (
                   <div key={post.title} className="col">
                     <div className="card">
