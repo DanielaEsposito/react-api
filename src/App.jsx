@@ -29,11 +29,10 @@ function App() {
   });
 
   const handlePostChange = (e) => {
-    const newValue =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
     const newAddPost = {
       ...addPost,
-      [e.target.name]: newValue,
+      [e.target.name]:
+        e.target.type === "checkbox" ? e.target.checked : e.target.value,
     };
     setAddPost(newAddPost);
     //console.log(addPost.category);
@@ -45,22 +44,29 @@ function App() {
     if (!e.target.checked) {
       newTags = addPost.tags.filter((tag) => tag != e.target.value);
     } else {
-      newTags = [addPost.tags, e.target.value];
+      newTags = [...addPost.tags, e.target.value];
     }
     setAddPost({ ...addPost, tags: newTags });
   };
   const handlerFormSubmit = (e) => {
     e.preventDefault();
-    // fetch("http://localhost:3000/posts", {
-    //   method: "POST",
-    //   Body: JSON.stringify({ username: "example" }),
-    // })
-    //   .then((res) => res.json)
-    //   .then((data) => {
-    //   });
+    fetch("http://localhost:3000/posts", {
+      method: "POST",
+      body: JSON.stringify(addPost),
+    })
+      .then((res) => res.json())
+      .then((data) => {});
     const newPosts = [...posts, addPost];
     setPosts(newPosts);
-    setAddPost("");
+    setAddPost({
+      id: "",
+      title: "",
+      img: "",
+      category: "",
+      content: "",
+      tags: [],
+      published: false,
+    });
     //creazione dei post
   };
   // useEffect(() => {
@@ -167,19 +173,19 @@ function App() {
                       </div>
                     </div>
                     {/*CHECKBOX TAGS */}
-                    <div className="col-6">
+                    <div className="col-3">
                       <label className="form-label ">Tags</label>
                       <div>
                         {tags.map((tag, index) => (
                           <div key={index} className="d-inline-block">
                             <input
-                              className=" mb-3"
                               checked={addPost.tags.includes(tag)}
+                              onChange={handleFormTagsChange}
                               type="checkbox"
+                              id={`post-tag-${tag}`}
                               name="post-tag"
                               value={tag}
-                              id={`post-tag-${tag}`}
-                              onChange={handleFormTagsChange}
+                              className=" mb-3"
                             />
                             <label className="m-3" htmlFor={`post-tag-${tag}`}>
                               {tag}
