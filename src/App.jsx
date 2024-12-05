@@ -85,111 +85,113 @@ function App() {
         <main>
           <section className="posts py-4">
             <div className="container">
-              {/*FORM INPUT  */}
-              <form onSubmit={handlerFormSubmit}>
-                {/*INPUT TITLE */}
-                <div className="row">
-                  <div className="col-3">
-                    <label htmlFor="title" className="form-label">
-                      Titolo
-                    </label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="title"
-                      id="title"
-                      value={addPost.title}
-                      onChange={handlePostChange}
-                    />
-                  </div>
-                  {/*INPUT IMG */}
-                  <div className="col-3">
-                    <label htmlFor="post-img" className="form-label">
-                      Immagine
-                    </label>
-                    <input
-                      className="form-control mb-4"
-                      type="text"
-                      name="img"
-                      id="post-img"
-                      value={addPost.img}
-                      onChange={handlePostChange}
-                    />
-                  </div>
-                  {/*INPUT CONTENT */}
-                  <div className="col-3">
-                    <label htmlFor="post-content" className="form-label">
-                      Contenuto
-                    </label>
-                    <textarea
-                      className="form-control mb-3"
-                      name="content"
-                      id="post-content"
-                      value={addPost.content}
-                      onChange={handlePostChange}
-                    ></textarea>
-                  </div>
-                  {/*SELECT CATEGORY*/}
-                  <div className="col-3">
-                    <label htmlFor="post-category" className="form-label">
-                      Categorie
-                    </label>
-                    <select
-                      className="form-select"
-                      aria-label="Default select example"
-                      name="category"
-                      onChange={handlePostChange}
-                    >
-                      <option value="">Seleziona una categoria</option>
-                      {categories.map((categoryName, index) => (
-                        <option key={index} value={categoryName}>
-                          {categoryName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/*CHECKBOX PUBLISHED */}
-                  <div className="col-3">
-                    <label htmlFor="post-published" className="form-label ">
-                      Published
-                    </label>
-                    <div>
+              <div className="form-container">
+                {/*FORM INPUT  */}
+                <form onSubmit={handlerFormSubmit}>
+                  {/*INPUT TITLE */}
+                  <div className="row">
+                    <div className="col-3">
+                      <label htmlFor="title" className="form-label">
+                        Titolo
+                      </label>
                       <input
-                        className=" mb-3"
-                        checked={addPost.published}
-                        type="checkbox"
-                        name="published"
-                        id="post-published"
+                        className="form-control"
+                        type="text"
+                        name="title"
+                        id="title"
+                        value={addPost.title}
                         onChange={handlePostChange}
                       />
                     </div>
-                  </div>
-                  {/*CHECKBOX TAGS */}
-                  <div className="col-3">
-                    <label className="form-label ">Tags</label>
-                    <div>
-                      {tags.map((tag, index) => (
-                        <div key={index} className="d-inline-block">
-                          <input
-                            className=" mb-3"
-                            checked={addPost.tags.includes(tag)}
-                            type="checkbox"
-                            name="post-tag"
-                            value={tag}
-                            id={`post-tag-${tag}`}
-                            onChange={handleFormTagsChange}
-                          />
-                          <label className="m-3" htmlFor={`post-tag-${tag}`}>
-                            {tag}
-                          </label>
-                        </div>
-                      ))}
+                    {/*INPUT IMG */}
+                    <div className="col-3">
+                      <label htmlFor="post-img" className="form-label">
+                        Immagine
+                      </label>
+                      <input
+                        className="form-control mb-4"
+                        type="text"
+                        name="img"
+                        id="post-img"
+                        value={addPost.img}
+                        onChange={handlePostChange}
+                      />
+                    </div>
+                    {/*INPUT CONTENT */}
+                    <div className="col-3">
+                      <label htmlFor="post-content" className="form-label">
+                        Contenuto
+                      </label>
+                      <textarea
+                        className="form-control mb-3"
+                        name="content"
+                        id="post-content"
+                        value={addPost.content}
+                        onChange={handlePostChange}
+                      ></textarea>
+                    </div>
+                    {/*SELECT CATEGORY*/}
+                    <div className="col-3">
+                      <label htmlFor="post-category" className="form-label">
+                        Categorie
+                      </label>
+                      <select
+                        className="form-select"
+                        aria-label="Default select example"
+                        name="category"
+                        onChange={handlePostChange}
+                      >
+                        <option value="">Seleziona una categoria</option>
+                        {categories.map((categoryName, index) => (
+                          <option key={index} value={categoryName}>
+                            {categoryName}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/*CHECKBOX PUBLISHED */}
+                    <div className="col-3">
+                      <label htmlFor="post-published" className="form-label ">
+                        Published
+                      </label>
+                      <div>
+                        <input
+                          className=" mb-3"
+                          checked={addPost.published}
+                          type="checkbox"
+                          name="published"
+                          id="post-published"
+                          onChange={handlePostChange}
+                        />
+                      </div>
+                    </div>
+                    {/*CHECKBOX TAGS */}
+                    <div className="col-6">
+                      <label className="form-label ">Tags</label>
+                      <div>
+                        {tags.map((tag, index) => (
+                          <div key={index} className="d-inline-block">
+                            <input
+                              className=" mb-3"
+                              checked={addPost.tags.includes(tag)}
+                              type="checkbox"
+                              name="post-tag"
+                              value={tag}
+                              id={`post-tag-${tag}`}
+                              onChange={handleFormTagsChange}
+                            />
+                            <label className="m-3" htmlFor={`post-tag-${tag}`}>
+                              {tag}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <button className="btn btn-primary">Cerca</button>
-              </form>
+                  <button className="btn btn-primary">Cerca</button>
+                </form>
+              </div>
             </div>
           </section>
           <section className="post-list">
