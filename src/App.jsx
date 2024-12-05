@@ -50,10 +50,12 @@ function App() {
   // useEffect(() => {
   //   checked === true ? alert("stai ") : "";
   // });
-  const handlerDeletePost = (postToDelete) => {
-    const updatedPosts = posts.filter((post) => post !== postToDelete);
-
-    setPosts(updatedPosts);
+  const handlerDeletePost = (id) => {
+    fetch("http://localhost:3000/posts/" + id, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+      });
   };
 
   return (
@@ -174,7 +176,7 @@ function App() {
                         <span className="delete-button">
                           <i
                             className="fa-solid fa-trash-can fa-sm delete"
-                            onClick={() => handlerDeletePost(post)}
+                            onClick={() => handlerDeletePost(post.id)}
                           ></i>
                         </span>
                       </div>
