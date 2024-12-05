@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import { useEffect } from "react";
 
 function App() {
-  const categories = ["natura", "città", "montagna", "urban", "eustorgio"];
+  const categories = ["Snack", "Pasta", "Dolce", "Salato"];
   const [addPost, setAddPost] = useState({
     id: "",
     title: "",
@@ -14,6 +14,7 @@ function App() {
     published: false,
   });
   const [posts, setPosts] = useState([]);
+  const tags = ["colazione", "pranzo", "cena", "merenda", "dolce", "pasta"];
 
   const fetchPosts = () => {
     fetch("http://localhost:3000/posts")
@@ -39,13 +40,28 @@ function App() {
     console.log(newAddPost);
   };
   //console.log(e);
-
+  const handleFormTagsChange = (e) => {
+    let newTags;
+    if (!e.target.checked) {
+      newTags = addPost.tags.filter((tag) => tag != e.target.value);
+    } else {
+      newTags = [addPost.tags, e.target.value];
+    }
+    setAddPost({ ...addPost, tags: newTags });
+  };
   const handlerFormSubmit = (e) => {
     e.preventDefault();
-    //creazione dei post
+    // fetch("http://localhost:3000/posts", {
+    //   method: "POST",
+    //   Body: JSON.stringify({ username: "example" }),
+    // })
+    //   .then((res) => res.json)
+    //   .then((data) => {
+    //   });
     const newPosts = [...posts, addPost];
     setPosts(newPosts);
     setAddPost("");
+    //creazione dei post
   };
   // useEffect(() => {
   //   checked === true ? alert("stai ") : "";
@@ -114,7 +130,6 @@ function App() {
                     ></textarea>
                   </div>
                   {/*SELECT CATEGORY*/}
-
                   <div className="col-3">
                     <label htmlFor="post-category" className="form-label">
                       Categorie
@@ -148,6 +163,28 @@ function App() {
                         id="post-published"
                         onChange={handlePostChange}
                       />
+                    </div>
+                  </div>
+                  {/*CHECKBOX TAGS */}
+                  <div className="col-3">
+                    <label className="form-label ">Tags</label>
+                    <div>
+                      {tags.map((tag, index) => (
+                        <div key={index} className="d-inline-block">
+                          <input
+                            className=" mb-3"
+                            checked={addPost.tags.includes(tag)}
+                            type="checkbox"
+                            name="post-tag"
+                            value={tag}
+                            id={`post-tag-${tag}`}
+                            onChange={handleFormTagsChange}
+                          />
+                          <label className="m-3" htmlFor={`post-tag-${tag}`}>
+                            {tag}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
