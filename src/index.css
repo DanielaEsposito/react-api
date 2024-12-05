@@ -1,0 +1,58 @@
+/* UTILS AND RESET*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/*HEADER*/
+.wrapper {
+  height: 100vh;
+}
+.header {
+  background-image: linear-gradient(
+    to right,
+    rgb(190, 69, 174),
+    rgb(6, 87, 194)
+  );
+  color: white;
+  height: 100px;
+  padding: 20px;
+}
+.header h1 {
+  font-weight: 700;
+}
+
+/*MAIN form */
+.form-label {
+  font-weight: 600;
+  border: 2px solid rgba(6, 87, 194, 0.685);
+  border-radius: 5px;
+  padding: 4px 9px;
+}
+
+/*CARD*/
+
+.card-img-container {
+  overflow: hidden;
+  height: 200px;
+}
+/* delete button*/
+.delete-button {
+  cursor: pointer;
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  position: relative;
+  display: inline-block;
+}
+.delete-button:hover {
+  border: 1px solid red;
+}
+
+.delete {
+  color: red;
+  position: absolute;
+  right: 8px;
+  bottom: 14px;
+}
