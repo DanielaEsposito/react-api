@@ -17,6 +17,7 @@
   color: white;
   height: 100px;
   padding: 20px;
+  
 }
 .header h1 {
   font-weight: 700;
@@ -28,6 +29,13 @@
   border: 2px solid rgba(6, 87, 194, 0.685);
   border-radius: 5px;
   padding: 4px 9px;
+}
+.tag-input-container {
+  display: flex;
+  flex-direction: column;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
 }
 .form-container {
   border: 1px solid black;

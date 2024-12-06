@@ -14,7 +14,14 @@ function App() {
     published: false,
   });
   const [posts, setPosts] = useState([]);
-  const tags = ["colazione", "pranzo", "cena", "merenda", "dolce", "pasta"];
+  const possibleTags = [
+    "colazione",
+    "pranzo",
+    "cena",
+    "merenda",
+    "dolce",
+    "pasta",
+  ];
 
   const fetchPosts = () => {
     fetch("http://localhost:3000/posts")
@@ -176,7 +183,7 @@ function App() {
                     <div className="col-3">
                       <label className="form-label ">Tags</label>
                       <div>
-                        {tags.map((tag, index) => (
+                        {possibleTags.map((tag, index) => (
                           <div key={index} className="d-inline-block">
                             <input
                               checked={addPost.tags.includes(tag)}
@@ -218,12 +225,24 @@ function App() {
                         <h5 className="card-title">{post.title}</h5>
                         <p className="card-text">{post.content}</p>
                         <p>{post.category}</p>
-                        <span className="delete-button">
-                          <i
-                            className="fa-solid fa-trash-can fa-sm delete"
-                            onClick={() => handlerDeletePost(post.id)}
-                          ></i>
-                        </span>
+                        <div className="post-tags">
+                          <div className="tag ">
+                            {post.tags.map((tag, index) => (
+                              <span
+                                key={index}
+                                className="badge text-bg-info me-2 my-2"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          <span className="delete-button">
+                            <i
+                              className="fa-solid fa-trash-can fa-sm delete"
+                              onClick={() => handlerDeletePost(post.id)}
+                            ></i>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
