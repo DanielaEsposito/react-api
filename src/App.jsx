@@ -57,12 +57,6 @@ function App() {
   };
   const handlerFormSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/posts", {
-      method: "POST",
-      body: JSON.stringify(addPost),
-    })
-      .then((res) => res.json())
-      .then((data) => {});
     const newPosts = [...posts, addPost];
     setPosts(newPosts);
     setAddPost({
@@ -74,22 +68,31 @@ function App() {
       tags: [],
       published: false,
     });
-    //creazione dei post
+    fetchCreatePost(newPosts);
   };
-  // useEffect(() => {
-  //   checked === true ? alert("stai ") : "";
-  // });
-  const handlerDeletePost = (id) => {
-    fetch("http://localhost:3000/posts/" + id, { method: "DELETE" })
-      .then((res) => res.json())
+  const fetchCreatePost = (data) => {
+    fetch("http://localhost:3000/posts", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res)
       .then((data) => {
-        setPosts(data);
+        fetchPosts();
       });
   };
+  useEffect(() => {
+    fetchCreatePost();
+  }, []);
 
+  const fetchDeletePost = (id) => {
+    fetch("http://localhost:3000/posts/" + id, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((data) => {});
+  };
   return (
     <>
-      <div className="wrapper">
+      <div className="wrapper " data-bs-theme="dark">
         <header className="header">
           <div className="container">
             <h1>Blog</h1>
@@ -149,6 +152,7 @@ function App() {
                         Categorie
                       </label>
                       <select
+                        id="post-cateory"
                         className="form-select"
                         aria-label="Default select example"
                         name="category"
@@ -170,7 +174,7 @@ function App() {
                       </label>
                       <div>
                         <input
-                          className=" mb-3"
+                          className=" my-4"
                           checked={addPost.published}
                           type="checkbox"
                           name="published"
@@ -228,10 +232,7 @@ function App() {
                         <div className="post-tags">
                           <div className="tag ">
                             {post.tags.map((tag, index) => (
-                              <span
-                                key={index}
-                                className="badge text-bg-info me-2 my-2"
-                              >
+                              <span key={index} className="badge me-3 my-2">
                                 {tag}
                               </span>
                             ))}
@@ -239,7 +240,7 @@ function App() {
                           <span className="delete-button">
                             <i
                               className="fa-solid fa-trash-can fa-sm delete"
-                              onClick={() => handlerDeletePost(post.id)}
+                              onClick={() => fetchDeletePost(post.id)}
                             ></i>
                           </span>
                         </div>
