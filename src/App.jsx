@@ -1,19 +1,11 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import { useEffect } from "react";
 
 function App() {
+  //API URL
+  const apiUrl = import.meta.env.VITE_API_URL;
+  //DATI POST
   const categories = ["Snack", "Pasta", "Dolce", "Salato"];
-  const [addPost, setAddPost] = useState({
-    id: "",
-    title: "",
-    img: "",
-    category: "",
-    content: "",
-    tags: [],
-    published: false,
-  });
-  const [posts, setPosts] = useState([]);
   const possibleTags = [
     "colazione",
     "pranzo",
@@ -22,9 +14,30 @@ function App() {
     "dolce",
     "pasta",
   ];
+  //default post
+  const defaultpost = {
+    id: "",
+    title: "",
+    img: "",
+    category: "",
+    content: "",
+    tags: [],
+    published: false,
+  };
+  const [posts, setPosts] = useState([]);
 
+  //console.log(posts);
+
+  const [addPost, setAddPost] = useState(defaultpost);
+
+  // GESTIONE DELL'INVIO DEL FORM
+  const handlerFormSubmit = (e) => {
+    e.preventDefault();
+    fetchCreatePost(addPost);
+  };
+  // CHIAMATA FETCH PER LA VISUALIZZAZIONE DEI POST
   const fetchPosts = () => {
-    fetch("http://localhost:3000/posts")
+    fetch(`${apiUrl}/posts`)
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);
@@ -35,6 +48,7 @@ function App() {
     fetchPosts();
   });
 
+  //GESTIONE DELL'ONCHANGE DEGLI INPUT
   const handlePostChange = (e) => {
     const newAddPost = {
       ...addPost,
@@ -42,10 +56,13 @@ function App() {
         e.target.type === "checkbox" ? e.target.checked : e.target.value,
     };
     setAddPost(newAddPost);
+
     //console.log(addPost.category);
     console.log(newAddPost);
   };
   //console.log(e);
+
+  //GESTIONE DELL'ONCHANGE DEL GRUPPO DI CHACKBOX
   const handleFormTagsChange = (e) => {
     let newTags;
     if (!e.target.checked) {
@@ -55,25 +72,20 @@ function App() {
     }
     setAddPost({ ...addPost, tags: newTags });
   };
-  const handlerFormSubmit = (e) => {
-    e.preventDefault();
-    const newPosts = [...posts, addPost];
-    setPosts(newPosts);
-    setAddPost({
-      id: "",
-      title: "",
-      img: "",
-      category: "",
-      content: "",
-      tags: [],
-      published: false,
-    });
-    fetchCreatePost(newPosts);
+
+  //FETCH DELETE
+  const fetchDeletePost = (id) => {
+    fetch(`${apiUrl}/posts` + id, { method: "DELETE" })
+      .then((res) => res.json())
+      .then(() => {
+        fetchPosts();
+      });
   };
+  //FETCH CREATE
   const fetchCreatePost = (data) => {
     fetch("http://localhost:3000/posts", {
       method: "POST",
-      headers: { "Content-type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
       .then((res) => res)
@@ -81,15 +93,7 @@ function App() {
         fetchPosts();
       });
   };
-  useEffect(() => {
-    fetchCreatePost();
-  }, []);
 
-  const fetchDeletePost = (id) => {
-    fetch("http://localhost:3000/posts/" + id, { method: "DELETE" })
-      .then((res) => res.json())
-      .then((data) => {});
-  };
   return (
     <>
       <div className="wrapper " data-bs-theme="dark">
@@ -215,12 +219,13 @@ function App() {
             <div className="container">
               <h2 className="post-list-title"> Post List</h2>
               <div className="row row-cols-3 g-4">
+                {/*CREAZIONE CARDS POSTS*/}
                 {posts.map((post) => (
-                  <div key={post.title} className="col">
+                  <div key={post.id} className="col">
                     <div className="card">
                       <div className="card-img-container">
                         <img
-                          src={post.img}
+                          src={`http://localhost:3000${post.img}`}
                           className="card-img-top img-fluid img-post"
                           alt=""
                         />
@@ -237,12 +242,63 @@ function App() {
                               </span>
                             ))}
                           </div>
-                          <span className="delete-button">
-                            <i
-                              className="fa-solid fa-trash-can fa-sm delete"
-                              onClick={() => fetchDeletePost(post.id)}
-                            ></i>
-                          </span>
+
+                          <button
+                            className="btn btn-danger btn-sm delete-button"
+                            data-bs-toggle="modal"
+                            data-bs-target={`#modal-delete-post-${post.id}`}
+                          >
+                            elimina
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {posts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="modal fade"
+                    id={`modal-delete-post-${post.id}`}
+                    tabIndex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1
+                            className="modal-title fs-5"
+                            id="exampleModalLabel"
+                          >
+                            Conferma di eliminazione
+                          </h1>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body">
+                          sei sicuro di voler eliminare questo post ?
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-danger"
+                            data-bs-dismiss="modal"
+                            onClick={() => fetchDeletePost(post.id)}
+                          >
+                            Elimina
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            data-bs-dismiss="modal"
+                          >
+                            Annulla
+                          </button>
                         </div>
                       </div>
                     </div>

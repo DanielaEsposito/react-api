@@ -55,21 +55,13 @@
   background-color: rgba(6, 87, 194);
 }
 .delete-button {
-  cursor: pointer;
-  border: 1px solid black;
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  position: relative;
-  display: inline-block;
+  padding: 1px 5px;
 }
 .delete-button:hover {
-  border: 1px solid red;
+  background-color: rgb(167, 3, 3);
 }
 
 .delete {
-  color: red;
-  position: absolute;
-  right: 8px;
-  bottom: 14px;
+  color: rgb(255, 255, 255);
+  margin-right: 2px;
 }
